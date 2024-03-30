@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import SpotifyQueue from './components/SpotifyQueue';
+import SpotifyCurrentlyPlaying from './components/SpotifyCurrentlyPlaying';
+
 
 function App() {
   const [token, setToken] = useState<string | null>(null);
@@ -16,28 +18,30 @@ function App() {
 
 
   useEffect(() => {
-    const hash = window.location.hash
-    let token = window.localStorage.getItem('token')
+    const hash = window.location.hash;
+    let token = window.localStorage.getItem('token');
 
     if (!token && hash) {
       token = (hash.substring(1).split("&").find(elem => elem.startsWith("access_token"))?.split("=")[1]) || null;
       window.location.hash = '';
       window.localStorage.setItem('token', token || '');
     }
-    setToken(token)
-  }, [])
+    setToken(token);
+  }, []);
 
   const logout = () => {
-    setToken("")
-    window.localStorage.removeItem("token")
-  }
+    setToken("");
+    window.localStorage.removeItem("token");
+  };
 
 
   return (
     <div className="App">
       <header className="App-header"></header>
-      <h1>Visualize Your Spotify Queue</h1>
-      {!token ? <h1>Visualize Your Spotify Queue</h1> : <SpotifyQueue token={token} />}
+      {!token && <h1>Visualize Your Spotify Queue</h1>}
+      {token && <SpotifyCurrentlyPlaying token={token} />}
+      {token && <SpotifyQueue token={token} />}
+
       {!token ?
         <a href={authLink}>Login
           to Spotify</a>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { parseSpotifyData } from '../services/SpotifyService';
-import { SpotifyData } from '../interfaces/SpotifyTypes';
+import { useSpotifyData } from '../services/useSpotifyData';
 
 interface SpotifyQueueProps {
     token: string;
@@ -15,37 +15,51 @@ interface Song {
 const SpotifyQueue: React.FC<SpotifyQueueProps> = ({ token }) => {
     const [queuedSongs, setQueuedSongs] = useState<Song[]>([]);
 
+    const { data, error } = useSpotifyData({ token });
     useEffect(() => {
-        const fetchQueuedSongs = async () => {
-            try {
-                const response = await fetch('https://api.spotify.com/v1/me/player/queue', {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-
-                if (response.ok) {
-                    const jsonData = await response.json();
-                    const { queue } = parseSpotifyData(jsonData); // This needs to correctly interpret the queue structure
-                    console.log(queue);
-                    setQueuedSongs(queue); // Assuming parseSpotifyData returns an object with a queue property
-                } else {
-                    console.error('Failed to fetch queued songs:', response.status);
-                }
-            } catch (error) {
-                console.error('Error fetching queued songs:', error);
+        if (data) {
+            const parsedData = parseSpotifyData(data);
+            if (parsedData && parsedData.queue) {
+                setQueuedSongs(parsedData.queue); // Ensure it's always an array
+            } else {
+                setQueuedSongs([]); // Fallback to an empty array
             }
-        };
+        } else {
+            setQueuedSongs([]); // Handle error by setting to an empty array
+        }
+    }, [data, error]);
 
-        fetchQueuedSongs();
-    }, [token]);
+    /*     useEffect(() => {
+            const fetchQueuedSongs = async () => {
+                try {
+                    const response = await fetch('https://api.spotify.com/v1/me/player/queue', {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    });
+    
+                    if (response.ok) {
+                        const jsonData = await response.json();
+                        const { queue } = parseSpotifyData(jsonData); // This needs to correctly interpret the queue structure
+                        setQueuedSongs(queue); // Assuming parseSpotifyData returns an object with a queue property
+                    } else {
+                        console.error('Failed to fetch queued songs:', response.status);
+                    }
+                } catch (error) {
+                    console.error('Error fetching queued songs:', error);
+                }
+            };
+    
+            fetchQueuedSongs();
+        }, [token]); */
 
     return (
+
         <div>
             <h1>Queued Songs</h1>
             <ul>
                 {queuedSongs.map((song, index) => (
-                    <li key={index}>{song.trackName} by {song.artist}</li>
+                    <li key={index}>{song.trackName} by {song.artist}<img src={song.images[0]} alt="Album cover" /></li>
                 ))}
             </ul>
         </div>
