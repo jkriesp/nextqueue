@@ -57,11 +57,17 @@ const SpotifyQueue: React.FC<SpotifyQueueProps> = ({ token }) => {
 
         <div>
             <h1>Queued Songs</h1>
-            <ul>
+            <div className="card-container">
                 {queuedSongs.map((song, index) => (
-                    <li key={index}>{song.trackName} by {song.artist}<img src={song.images[0]} alt="Album cover" /></li>
+                    <div key={index} className="song-card">
+                        <img src={song.images[0]} alt="Album cover" className="song-image" />
+                        <div className="song-info">
+                            <h2>{song.trackName}</h2>
+                            <p>{song.artist}</p>
+                        </div>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };

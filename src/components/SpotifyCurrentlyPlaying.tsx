@@ -31,18 +31,20 @@ const SpotifyCurrentlyPlaying: React.FC<SpotifyQueueProps> = ({ token }) => {
   }, [data, error]);
 
   return (
-
-    <div>
+    <>
       <h1>Currently Playing</h1>
-      <ul>
+      <div className="card">
         {currentlyPlaying.map((song, index) => (
-          <li key={index}>
-            <img src={song.images[0]} alt={song.trackName} />
-            {song.artist} - {song.trackName}
-          </li>
+          <div key={index} className="song-card">
+            <img src={song.images[0]} alt={song.trackName} className="song-image" />
+            <div className="song-info">
+              <h2>{song.trackName}</h2>
+              <p>{song.artist}</p>
+            </div>
+          </div>
         ))}
-      </ul>
-    </div>
+      </div>
+    </>
   );
 };
 
