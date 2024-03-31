@@ -20,7 +20,7 @@ export const useSpotifyData = ({ token }: SpotifyQueueProps): { data: SpotifyDat
         });
         setData(response.data);
       } catch (error) {
-        setError('Failed to fetch data');
+        setError('Failed to fetch data:' + error);
       }
     };
     fetchData();

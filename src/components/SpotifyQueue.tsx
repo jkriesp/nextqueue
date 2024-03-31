@@ -15,6 +15,7 @@ interface Song {
 const SpotifyQueue: React.FC<SpotifyQueueProps> = ({ token }) => {
     const [queuedSongs, setQueuedSongs] = useState<Song[]>([]);
 
+    // use the useSpotifyData to get the queued songs
     const { data, error } = useSpotifyData({ token });
     useEffect(() => {
         if (data) {
@@ -60,7 +61,7 @@ const SpotifyQueue: React.FC<SpotifyQueueProps> = ({ token }) => {
             <div className="card-container">
                 {queuedSongs.map((song, index) => (
                     <div key={index} className="song-card">
-                        <img src={song.images[0]} alt="Album cover" className="song-image" />
+                        <img src={song.images[1]} alt="Album cover" className="song-image" />
                         <div className="song-info">
                             <h2>{song.trackName}</h2>
                             <p>{song.artist}</p>

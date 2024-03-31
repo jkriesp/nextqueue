@@ -17,8 +17,8 @@ export const parseSpotifyData = (data: SpotifyData) => {
     }));
 
     // Log the currently playing info for debugging
-    console.log('Currently playing:', currentlyPlaying);
-    console.log('Queue:', queue);
+    //console.log('Currently playing:', currentlyPlaying);
+    //console.log('Queue:', queue);
 
     // Return these values to be used where this function is called
     return { currentlyPlaying, queue };
