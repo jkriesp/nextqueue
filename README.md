@@ -1,4 +1,4 @@
-# NextQue
+# NextQueue
 
 ![Screenshot of NextQueue](src/assets/jenske-nextqueue.png)
 
@@ -15,7 +15,7 @@ Visualize your Spotify Queue
 
 ```bash
 git clone https://github.com/jkriesp/nextqueue.git
-cd next queue
+cd nextqueue
 bun install
 bun run dev
 ```
